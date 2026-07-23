@@ -1,4 +1,4 @@
-using UnityEngine;
+    using UnityEngine;
 
 public class MobileAssetsManager : MonoBehaviour
 {
@@ -8,16 +8,24 @@ private GameObject[] mobileAssets;
 private GameObject[] desktopAssets;
 private void Awake()
 {
-#if UNITY_IOS || UNITY_ANDROID
-foreach (var asset in mobileAssets)
-{
-asset.SetActive(true);
+if(Application.isEditor)
+        {
+          SetActiveAssets(desktopAssets, true);   
+        }
+        else if (Application.isMobilePlatform)
+        {
+            SetActiveAssets(mobileAssets, true);
+        }
+        else
+        {
+            SetActiveAssets(desktopAssets, true);
+        }      
 }
-#else
-foreach (var item in desktopAssets)
-{
-asset.SetActive(true);
-}
-#endif
-}
+private void SetActiveAssets(GameObject[] assets, bool isActive)
+    {
+        foreach(var asset in assets)
+        {
+            asset.SetActive(isActive);
+        }
+    }
 }
